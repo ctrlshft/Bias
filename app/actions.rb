@@ -1,20 +1,34 @@
-
+# require 'ruby-web-search'
 
 # Homepage (Root path)
 get '/' do
 
   conn = Faraday.new(headers: {accept_encoding: 'none'}, url: 'https://gateway-a.watsonplatform.net') do |faraday|
-  faraday.request  :url_encoded             # form-encode POST params
+  # faraday.request  :url_encoded             # form-encode POST params
   faraday.response :logger                  # log requests to STDOUT
   faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
   faraday.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
 end
 
-response = conn.get '/calls/data/GetNews?outputMode=json&start=now-30d&end=now&count=10&q.enriched.url.enrichedTitle.keywords.keyword.text=paintings&return=enriched.url.url,enriched.url.title&apikey=974094b83de2749ddb09bee46a068e273cb4734d'
+@titles = []
+search_response = RubyWebSearch::Google.search(:query => "Putin:CNN")
+search_response.results.each do |result| 
+@titles.push(result[:title])  
+end
 
-binding.pry
 
 
-@response1 = response.body
+myUrl = 'http://www.aljazeera.com/news/2015/07/palestinians-bury-baby-killed-west-bank-arson-attack-150731130550655.html'
+
+response = conn.get "/calls/url/URLGetTargetedSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&url=#{myUrl}&outputMode=json&targets=israel"
+
+
+@sentiment_score = response.body['results'][0]['sentiment']['score']
+@sentiment_type = response.body['results'][0]['sentiment']['type']
+
+
+
+puts (@sentiment_type)
+puts (@sentiment_score)
   erb :index
 end

@@ -3,6 +3,7 @@ source "https://rubygems.org"
 
 gem 'rake'
 gem 'activesupport'
+gem 'ruby-web-search'
 
 gem 'sinatra'
 gem 'sinatra-contrib'

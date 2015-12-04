@@ -5,10 +5,14 @@ require 'active_support/all'
 
 require 'faraday'
 require 'faraday_middleware'
+require 'rexml/document'
+# require 'google_custom_search'
 # Load Sinatra Framework (with AR)
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/contrib/all' # Requires cookies, among other things
+# require 'sinatra-initializers'
+require 'ruby-web-search'
 
 require 'pry'
 
@@ -17,6 +21,10 @@ APP_NAME = APP_ROOT.basename.to_s
 
 # Sinatra configuration
 configure do
+
+  # GOOGLE_API_KEY = "AIzaSyAYry4VvoG-c200-C3QuMNSOLzJNCG0Xz8"
+  # GOOGLE_SEARCH_CX = "..."
+
   set :root, APP_ROOT.to_path
   set :server, :puma
 
