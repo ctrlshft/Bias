@@ -13,6 +13,8 @@ require 'sinatra/activerecord'
 require 'sinatra/contrib/all' # Requires cookies, among other things
 # require 'sinatra-initializers'
 require 'ruby-web-search'
+require 'google_search'
+require 'bing-search'
 
 require 'pry'
 

@@ -1,3 +1,9 @@
+PATH
+  remote: localgems/ruby-web-search
+  specs:
+    ruby-web-search (0.0.2)
+      json
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -16,6 +22,7 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     backports (3.6.7)
+    bing-search (2.0.0)
     bond (0.5.1)
     builder (3.2.2)
     coderay (1.1.0)
@@ -23,6 +30,8 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.10.0)
       faraday (>= 0.7.4, < 0.10)
+    google_search (1.2.0)
+      json
     i18n (0.7.0)
     json (1.8.3)
     method_source (0.8.2)
@@ -48,8 +57,6 @@ GEM
       rack (>= 1.0)
       rack-test (~> 0.6.2)
       ripl (>= 0.7.0)
-    ruby-web-search (0.0.2)
-      json
     shotgun (0.9.1)
       rack (>= 1.0)
     sinatra (1.4.6)
@@ -83,12 +90,14 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  bing-search
   faraday
   faraday_middleware
+  google_search
   pry
   puma
   rake
-  ruby-web-search
+  ruby-web-search!
   shotgun
   sinatra
   sinatra-activerecord

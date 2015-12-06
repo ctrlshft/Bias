@@ -3,13 +3,15 @@ source "https://rubygems.org"
 
 gem 'rake'
 gem 'activesupport'
-gem 'ruby-web-search'
+gem 'ruby-web-search', :path => "localgems/ruby-web-search"
+gem 'google_search'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'sinatra-activerecord'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'bing-search'
 
 gem 'puma'
 gem 'tux'

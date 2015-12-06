@@ -1,38 +1,28 @@
 <h1>Bias</h1>
 
-<form action: method:"get">
-  News Sources:<br>
-  <select name="Newsources">
-  <option value="CNN">CNN</option>
-  <option value="RT">RT</option>
-  <option value="FOX">FOX</option>
-  <option value="CBC">CBC</option>
-</select>
+<form action:'/' method:"get">
+<!--   News Sources:<br>
+  <select name="newsources">
+  <option value="cnn.com">CNN</option>
+  <option value="rt.com">RT</option>
+  <option value="foxnews.com">FOX</option>
+  <option value="cbc.ca">CBC</option>
+</select> -->
   <br><br>
   Search Subject:<br>
-  <input type="text" name="lastname">
+  <input type="text" name="topic">
   <input type="submit" value="Submit">
 </form>
 
 
 
+<% @articles.each do |article| %>
+  <p><%=article[:title] %></p>
+  <p><%=article[:url] %></p>
+  <p><%=article[:score] %></p>
+  <p><%=article[:type] %></p>
+<%end%>
 
-
-  
-
-
-<p> Title1: <%= @myTitle1 %>  </p>
-<p> URL1: <%= @myUrl1 %>  </p>
-<p> Sentiment Score 1: <%= @sentiment_score1 %>  </p>
-<p> Sentiment Type 1: <%= @sentiment_type1 %>  </p>
-<p> Title2: <%= @myTitle2 %>  </p>
-<p> URL2: <%= @myUrl2 %>  </p>
-<p> Sentiment Score 2: <%= @sentiment_score2 %>  </p>
-<p> Sentiment Type 2: <%= @sentiment_type2 %>  </p>
-<p> Title3: <%= @myTitle3 %>  </p>
-<p> URL3: <%= @myUrl3 %>  </p>
-<p> Sentiment Score 3: <%= @sentiment_score3 %>  </p>
-<p> Sentiment Type 3: <%= @sentiment_type3 %>  </p>
 
 <p> Average Sentiment type: <%= @average_sentiment_type %>  
 <p> Average Sentiment score: <%= @average_sentiment_score %>  
