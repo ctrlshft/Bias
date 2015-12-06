@@ -18,7 +18,7 @@
 
 <% @articles.each do |article| %>
   <p><%=article[:title] %></p>
-  <p><%=article[:url] %></p>
+  <p><a href="<%=article[:url]%>"><%=article[:url]%></a></p>
   <p><%=article[:score] %></p>
   <p><%=article[:type] %></p>
 <%end%>
