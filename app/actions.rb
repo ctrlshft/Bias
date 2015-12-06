@@ -19,7 +19,7 @@ get '/' do
   end
 
   def analyze_url_non_targeted (url)
-    @conn.get "/calls/url/URLGetTargetedSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&url=#{url}&outputMode=json"
+    @conn.get "/calls/url/URLGetTextSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&url=#{url}&outputMode=json"
   end
 
     def analyze_url_title (search_topic, title)
@@ -69,6 +69,9 @@ get '/' do
         response = analyze_url(search_topic_lower,article[:url])
         if response.body['status'] == "ERROR"
           response = analyze_url_title(search_topic,article[:title])
+          if response.body['status'] == "ERROR"
+            response = analyze_url_non_targeted(article[:url])
+          end
         end  
       end
     end
