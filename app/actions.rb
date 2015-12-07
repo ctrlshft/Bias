@@ -1,6 +1,17 @@
 BingSearch.account_key = 'hqXahx+6k2dIwnykE26HCrEItoUXM8JmiVB1QBocMhA'
 
-#search first top match in bing news, compare sentiment with matches 2-10. show top match and counter sentiment match.
+#search ten top articles on topic
+#extract sentiment
+#calculate max sentiment difference
+#display the 2 max sentiment difference articles
+#calculate 2nd biggest sentiment difference and provide those articles as option
+#calculate 3nd biggest sentiment difference and provide those articles as option
+
+
+#or create new sentiment scale based on biggest difference and populate
+
+#strech - provide sentiment map for all search results? or 2 views. one - relative sentiment, two - absolute sentiment.switchable
+
 
 get '/' do
 
@@ -11,32 +22,13 @@ get '/' do
     faraday.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
   end
 
-  @avg_score_arr = []
+#-------------get general sentiment of article-------#
 
-
-# get sentiment of topic
-  # def analyze_url (search_topic, url)
-  #   @conn.get "/calls/url/URLGetTargetedSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&url=#{url}&outputMode=json&targets=#{search_topic}"
-  # end
-
-#get sentiment of title
-  #   def analyze_url_title (search_topic, title)
-  #   @conn.get "/calls/text/TextGetTargetedSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&text='#{title}&outputMode=json&targets=#{search_topic}"
-  # end
-
-# def extract_sentiment_targeted (response, article_index)
-#   return if response.body['status'] == "ERROR"
-#   @articles[article_index][:score] = response.body['results'][0]['sentiment']['score'].to_f
-#   @articles[article_index][:type] =  response.body['results'][0]['sentiment']['type']
-#   @avg_score_arr.push(@articles[article_index][:score])
-# end
-
-#get general sentiment of article 
   def analyze_url_non_targeted (url)
     @conn.get "/calls/url/URLGetTextSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&url=#{url}&outputMode=json"
   end
 
-#extract seniment
+#----------extract seniment--------#
 
   def extract_sentiment (response, article_index)
     return if response.body['status'] == "ERROR"
@@ -45,70 +37,38 @@ get '/' do
     @avg_score_arr.push(@articles[article_index][:score])
   end
 
-
-  # google search
   @articles = []
+  @avg_score_arr = []
+  
 
+
+# ---- search bing with topic -------- #
   search_topic = params[:topic]
-  # search_topic_lower = search_topic.downcase
-  # search_topic_cap = search_topic.capitalize
-  # news_sources = ["cnn.com","rt.com","cbc.ca","bbc.co.uk","npr.org","aljazeera.com","vice.com"]
+  search_response = BingSearch.news("#{search_topic}" , limit: 10, sort:"date")
 
 
-  # news_sources.each do |source|
+# ----- parse responses ----- #
+  search_response.each do |result| 
+    article = {
+      title: result.title,
+      url: result.url,
+      source: result.source
+    }
+    @articles.push(article)
+  end
 
-  search_response = BingSearch.news("#{search_topic}", limit: 10, sort:"date")
-
-#must send this too somehow
-  # &tbs=qdr
-#---------------------------
-
-    search_response.each do |result| 
-      article = {
-        title: result.title,
-        url: result.url
-      }
-      @articles.push(article)
-    end
-    binding.pry
-
-  # end
-
-  #analyse with Alchemy
-
-  # @articles.each_with_index do |article, article_index|
-  #   response = analyze_url(search_topic,article[:url])
-  #   if response.body['status'] != "ERROR"
-  #     extract_sentiment_targeted(response, article_index)
-  #   else
-  #     response = analyze_url(search_topic_lower,article[:url])
-  #     if response.body['status'] == "ERROR"
-  #       response = analyze_url(search_topic_lower,article[:url])
-  #       if response.body['status'] == "ERROR"
-  #         response = analyze_url_title(search_topic,article[:title])
-  #         if response.body['status'] == "ERROR"
-  #           response = analyze_url_non_targeted(article[:url])
-  #           extract_sentiment(response, article_index)
-  #         end
-  #       end  
-  #     end
-  #   end
-  # end
-
+# ---- send to alchemy for analysis sentiment extraction ----#
   @articles.each_with_index do |article, article_index|
     response = analyze_url_non_targeted(article[:url])
     extract_sentiment(response, article_index)
   end
 
- 
 
-
-
-
-
-  # binding.pry
+# ------ average sentiment score of all articles ----- #
   @average_sentiment_score = @avg_score_arr.sum / @avg_score_arr.size.to_f
 
+
+# ----- average sentiment type of all articles ----- #
   if @average_sentiment_score > 0
     @average_sentiment_type = 'positive'
   else
@@ -117,11 +77,16 @@ get '/' do
 
 
 
+ 
+# # --- sort by sentiment scores and find sentiment range (will plot by relative sentiment----#
+  @articles = @articles.reject {|article| (article[:score] == nil)||(article[:score] == 0)}
+  @articles = @articles.sort_by { |hsh| hsh[:score] }
+  sentiment_range = @articles.last[:score] - @articles.first[:score]
+
+  @articles.each do |article|
+   article[:normalized_score] = ( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score] )
+  end
 
 
-
-
-# puts (@sentiment_type)
-# puts (@sentiment_score)
   erb :index
 end

@@ -1,33 +1,31 @@
-<h1>Bias</h1>
+<div class = "container">
+  <div class="column" id="center"> 
+    <h1 id="title">Bias</h1>
+    <br>
 
-<form action:'/' method:"get">
-<!--   News Sources:<br>
-  <select name="newsources">
-  <option value="cnn.com">CNN</option>
-  <option value="rt.com">RT</option>
-  <option value="foxnews.com">FOX</option>
-  <option value="cbc.ca">CBC</option>
-</select> -->
-  <br><br>
-  Search Subject:<br>
-  <input type="text" name="topic">
-  <input type="submit" value="Submit">
-</form>
+    <form action:'/' method:"get">
+      <input id="search" type="search" name="topic" placeholder="search topic">
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
 
 
 
-<% @articles.each do |article| %>
-  <p><%=article[:title] %></p>
-  <p><a href="<%=article[:url]%>"><%=article[:url]%></a></p>
-  <p><%=article[:score] %></p>
-  <p><%=article[:type] %></p>
-<%end%>
+  <div class = "columns" >
+    <% @articles.each do |article| %>
+      <p><a href="<%=article[:url]%>" target="_blank"><%=article[:title]%></a></p>
+      <p><%=article[:source] %></p>
+      <p><%=article[:score] %></p>
+      <p><%=article[:type] %></p>
+    <%end%>
 
 
-<p> Average Sentiment type: <%= @average_sentiment_type %>  
-<p> Average Sentiment score: <%= @average_sentiment_score %>  
+    <p> Average Sentiment type: <%= @average_sentiment_type %>  
+    <p> Average Sentiment score: <%= @average_sentiment_score %>  
+  </div>
 
-
+</div>
 
 
 
