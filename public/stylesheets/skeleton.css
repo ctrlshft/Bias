@@ -49,6 +49,33 @@
   width: 50%;
 }
 
+.article_dot{
+  display: inline-block;
+  width:30px;
+  height:30px;
+  border: 3px solid #5E81E4;
+  border-radius: 50%;
+  position:absolute;
+  background-color: #C5C2AD;
+  margin-top: 12px
+
+}
+
+.article_dot:hover{
+  height:50px;
+
+
+}
+
+#sentiment_scale{
+  height:60px;
+  border:1px solid black;
+  z-index: -1;
+  background-color: #555
+
+
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -75,8 +102,6 @@
   .container {
     width: 80%; }
   .column,
-  .columns {
-    margin-left: 4%; }
   .column:first-child,
   .columns:first-child {
     margin-left: 0; }

@@ -25,7 +25,7 @@ get '/' do
 #-------------get general sentiment of article-------#
 
   def analyze_url_non_targeted (url)
-    @conn.get "/calls/url/URLGetTextSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&url=#{url}&outputMode=json"
+    @conn.get "/calls/url/URLGetTextSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&url=#{url}&outputMode=json&showSourceText=1&sourceText=cleaned"
   end
 
 #----------extract seniment--------#
@@ -34,27 +34,43 @@ get '/' do
     return if response.body['status'] == "ERROR"
     @articles[article_index][:score] = response.body['docSentiment']['score'].to_f
     @articles[article_index][:type] =  response.body['docSentiment']['type']
+    @articles[article_index][:content] =  response.body['text']
     @avg_score_arr.push(@articles[article_index][:score])
   end
 
   @articles = []
+
   @avg_score_arr = []
-  
+
+  news_sources = ["cnn",
+                  "cbc",
+                  "al jazeera",
+                  "bbc",
+                  "new york times",
+                  "washington post",
+                  "vice",
+                  "toronto sun",]
+
+  search_topic = params[:topic]
 
 
 # ---- search bing with topic -------- #
-  search_topic = params[:topic]
-  search_response = BingSearch.news("#{search_topic}" , limit: 10, sort:"date")
+  news_sources.each do |source|
+
+   
+    search_response = BingSearch.news("#{search_topic} #{source}" , limit: 1, sort:"relevance")
 
 
-# ----- parse responses ----- #
-  search_response.each do |result| 
-    article = {
-      title: result.title,
-      url: result.url,
-      source: result.source
-    }
-    @articles.push(article)
+  # ----- parse responses ----- #
+    search_response.each do |result| 
+      article = {
+        title: result.title,
+        url: result.url,
+        source: result.source
+
+      }
+      @articles.push(article)
+    end
   end
 
 # ---- send to alchemy for analysis sentiment extraction ----#
@@ -79,13 +95,16 @@ get '/' do
 
  
 # # --- sort by sentiment scores and find sentiment range (will plot by relative sentiment----#
+
   @articles = @articles.reject {|article| (article[:score] == nil)||(article[:score] == 0)}
   @articles = @articles.sort_by { |hsh| hsh[:score] }
-  sentiment_range = @articles.last[:score] - @articles.first[:score]
+  @articles.reverse!
+  sentiment_range = @articles.first[:score] - @articles.last[:score]
 
   @articles.each do |article|
-   article[:normalized_score] = ( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score] )
+   article[:normalized_score] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 96.2
   end
+
 
 
   erb :index

@@ -15,7 +15,7 @@
   <div class = "columns" >
     <% @articles.each do |article| %>
       <p><a href="<%=article[:url]%>" target="_blank"><%=article[:title]%></a></p>
-      <p><%=article[:source] %></p>
+      <p ><%=article[:source] %></p>
       <p><%=article[:score] %></p>
       <p><%=article[:type] %></p>
     <%end%>
@@ -24,6 +24,15 @@
     <p> Average Sentiment type: <%= @average_sentiment_type %>  
     <p> Average Sentiment score: <%= @average_sentiment_score %>  
   </div>
+
+  <div class = "columns" id = "sentiment_scale">
+  <% @articles.each_with_index do |article, article_index| %>
+  <p class="article_dot" "tootltip" title"yoooo" id="dot#{article_index}" style="right: <%=article[:normalized_score]%>%">   </p>
+  <%end%>
+
+
+  </div> 
+
 
 </div>
 
