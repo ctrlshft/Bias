@@ -1,8 +1,8 @@
+
 <div class = "container">
   <div class="column" id="center"> 
     <h1 id="title">Bias</h1>
     <br>
-
     <form action:'/' method:"get">
       <input id="search" type="search" name="topic" placeholder="search topic">
       <br>
@@ -12,26 +12,26 @@
 
 
 
-  <div class = "columns" >
+<!--   <div class = "columns" >
     <% @articles.each do |article| %>
       <p><a href="<%=article[:url]%>" target="_blank"><%=article[:title]%></a></p>
       <p ><%=article[:source] %></p>
       <p><%=article[:score] %></p>
       <p><%=article[:type] %></p>
-    <%end%>
+    <%end%> -->
 
 
-    <p> Average Sentiment type: <%= @average_sentiment_type %>  
-    <p> Average Sentiment score: <%= @average_sentiment_score %>  
+<!--   <p> Average Sentiment type: <%= @average_sentiment_type %>  
+  <p> Average Sentiment score: <%= @average_sentiment_score %>   -->
   </div>
 
   <div class = "columns" id = "sentiment_scale">
-  <% @articles.each_with_index do |article, article_index| %>
-  <p class="article_dot" "tootltip" title"yoooo" id="dot#{article_index}" style="right: <%=article[:normalized_score]%>%">   </p>
-  <%end%>
 
-
+    <% @articles.each_with_index do |article, article_index| %>
+    <div class="article_dot tooltip" title="<%=article[:source].upcase%>: <%=article[:title]%>" data-url="<%=article[:url]%>" id="<%=article_index%>" style="right: <%=article[:normalized_score]%>%"> </div>
+    <%end%>
   </div> 
+  
 
 
 </div>
