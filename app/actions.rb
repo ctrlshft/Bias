@@ -49,29 +49,47 @@ get '/' do
                   "new york times",
                   "washington post",
                   "vice",
-                  "toronto sun",]
+                  "toronto sun",
+                  "rt news",
+                  "infowars",
+                  "haaretz"
+
+                ]
 
   search_topic = params[:topic]
+  media_source = params[:newssources]
 
 
 # ---- search bing with topic -------- #
-  news_sources.each do |source|
-
-   
-    search_response = BingSearch.news("#{search_topic} #{source}" , limit: 1, sort:"relevance")
-
-
-  # ----- parse responses ----- #
+  # news_sources.each do |source|
+  if media_source == "ALL"
+    search_response = BingSearch.news("#{search_topic}" , limit: 10, sort:"date")
+    # --------- parse responses ------- #
     search_response.each do |result| 
       article = {
         title: result.title,
         url: result.url,
         source: result.source
-
       }
       @articles.push(article)
     end
+    
+  else
+    search_response = RubyWebSearch::Google.search(:query => "#{search_topic} :site #{media_source}", :size => 5)
+  # ----- parse responses ----- #
+    search_response.results.each do |result| 
+      article = {
+        title: result[:title],
+        url: result[:url],
+        source: result[:domain]
+      }
+      @articles.push(article)
+    end
+ 
   end
+
+
+  # end
 
 # ---- send to alchemy for analysis sentiment extraction ----#
   @articles.each_with_index do |article, article_index|
@@ -98,12 +116,18 @@ get '/' do
 
   @articles = @articles.reject {|article| (article[:score] == nil)||(article[:score] == 0)}
   @articles = @articles.sort_by { |hsh| hsh[:score] }
-  @articles.reverse!
-  sentiment_range = @articles.first[:score] - @articles.last[:score]
+  
 
   @articles.each do |article|
-   article[:normalized_score] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 96.2
+   article[:normalized_score_absolute] = (article[:score] - @articles[0][:score]) * 50
   end
+
+
+  # sentiment_range = @articles.first[:score] - @articles.last[:score]
+  @articles.each do |article|
+   article[:normalized_score_relative] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 100
+  end
+
 
 
 

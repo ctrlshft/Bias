@@ -1,40 +1,59 @@
-
 <div class = "container">
-  <div class="column" id="center"> 
-    <h1 id="title">Bias</h1>
-    <br>
-    <form action:'/' method:"get">
-      <input id="search" type="search" name="topic" placeholder="search topic">
+  <div class ="row text-center">
+    
+    <div class="one-third column" id="negative-article">
+ 
+    </div>
+    <div class="one-third column" id="center">
+      <h1 id="title">Bias</h1>
       <br>
-      <input type="submit" value="Submit">
-    </form>
-  </div>
-
-
-
-<!--   <div class = "columns" >
-    <% @articles.each do |article| %>
-      <p><a href="<%=article[:url]%>" target="_blank"><%=article[:title]%></a></p>
-      <p ><%=article[:source] %></p>
-      <p><%=article[:score] %></p>
-      <p><%=article[:type] %></p>
-    <%end%> -->
-
-
-<!--   <p> Average Sentiment type: <%= @average_sentiment_type %>  
-  <p> Average Sentiment score: <%= @average_sentiment_score %>   -->
-  </div>
-
-  <div class = "columns" id = "sentiment_scale">
-
-    <% @articles.each_with_index do |article, article_index| %>
-    <div class="article_dot tooltip" title="<%=article[:source].upcase%>: <%=article[:title]%>" data-url="<%=article[:url]%>" id="<%=article_index%>" style="right: <%=article[:normalized_score]%>%"> </div>
-    <%end%>
-  </div> 
+      <form action:'/' method:"get">
+        <input id="search" type="search" name="topic" placeholder="search topic">
+        <br>
+        <select id="dropdown" name="newssources">
+          <option value="ALL">All</option>
+          <option value="CNN">CNN</option>
+          <option value="RT">RT</option>
+          <option value="FOX">FOX</option>
+          <option value="CBC">CBC</option>
+        </select>
+        <input id="submit_button" type="submit" value="Submit">
+      </form>
+    </div>
+    <div class="one-third column" id="positive-article">
   
+    </div>
+  </div>
+
+
 
 
 </div>
 
+  <div id="sentiment_scale">
+    <!-- <div class="inner-container"> -->
+      <% @articles.each_with_index do |article, article_index| %>
+      <div class="article_dot tooltip" 
+           title="<%=article[:source].upcase%>: <%=article[:title]%>" 
+           data-url="<%=article[:url]%>" 
+           data-content="<%=article[:content]%>"
+           data-score="<%=article[:normalized_score_relative]%>"
+           data-title="<%=article[:source].upcase%>: <%=article[:title]%>" 
+           id="<%=article_index%>" 
+           style="left: <%=article[:normalized_score_relative]%>%">
+      </div>
+      <%end%>
+    <!-- </div> -->
+  </div>
 
 
+
+  <!--   <div class = "columns" >
+    <% @articles.each do |article| %>
+    <p><a href="<%=article[:url]%>" target="_blank"><%=article[:title]%></a></p>
+    <p ><%=article[:source] %></p>
+    <p><%=article[:score] %></p>
+    <p><%=article[:type] %></p>
+    <%end%> -->
+    <!--   <p> Average Sentiment type: <%= @average_sentiment_type %>
+      <p> Average Sentiment score: <%= @average_sentiment_score %>   -->
