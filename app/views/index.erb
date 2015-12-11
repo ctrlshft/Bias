@@ -10,14 +10,14 @@
       <form action:'/' method:"get">
         <input id="search" type="search" name="topic" placeholder="search topic">
         <br>
-        <select id="dropdown" name="newssources">
+        <select id="dropdown" name="media">
           <option value="ALL">All</option>
-          <option value="cnn.com">CNN</option>
-          <option value="rt.com">RT</option>
-          <option value="foxnews.com">FOX</option>
-          <option value="cbc.ca">CBC</option>
-          <option value="npr.org">NPR</option>
-          <option value="infowars.com">InfoWars</option>
+          <option value="www.cnn.com">CNN</option>
+          <option value="www.rt.com">RT</option>
+          <option value="www.wsj.com">WSJ</option>
+          <option value="www.cbc.ca">CBC</option>
+          <option value="www.npr.org">NPR</option>
+          <option value="www.infowars.com">InfoWars</option>
         </select>
         <input id="submit_button" type="submit" value="Submit">
       </form>
@@ -40,6 +40,8 @@
            data-url="<%=article[:url]%>" 
            data-content="<%=article[:content]%>"
            data-score="<%=article[:score]%>"
+           data-srel="<%=article[:normalized_score_relative]%>"
+           data-sabs="<%=article[:normalized_score_absolute]%>"
            data-title="<%=article[:source].upcase%>: <%=article[:title]%>" 
            id="<%=article_index%>" 
            style="left: <%=article[:normalized_score_absolute]%>%; background-color: hsl(<%=article[:normalized_score_relative]%>,75%,50%)">

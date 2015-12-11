@@ -9,29 +9,53 @@ $(document).ready(function() {
     trigger: 'hover'
   });
 
-  // $(".article_dot").on('click', function(){
-  //    var url = $(this).data().url
-  //    window.open(url, '_blank');   
-  // });
+  $("#sentiment_scale").click(function() {
+    if (!$(this).hasClass("relative")) {
+      $(this).addClass("relative")
+      $( ".article_dot" ).each(function( index, element ) {
+        var score_relative = $(element).data().srel
+        $( element ).css( "left", score_relative + "%");
+      });
+    }
+
+    else {
+      $(this).removeClass("relative")
+      $( ".article_dot" ).each(function( index, element ) {
+        var score_absolute = $(element).data().sabs
+        $( element ).css( "left", score_absolute + "%");
+      });
+    }
+    
+  });
+
+
+       
+    
+
+
 
 
   
 
 
-  $(".article_dot").on('click', function(){
+  $(".article_dot").on('click', function(event){
+    event.stopPropagation();
     var url = $(this).data().url;
     var content = $(this).data().content;
-    var score = $(this).data().score;
+    var score = $(this).data().srel;
     var title = $(this).data().title;
 
-    if (score < -0.1) { 
+    if (score < 50) { 
       // $("#negative-article").empty().append("<p> <a href=" + url + "/a>" + Go to full article + "</p>"); 
       $("#negative-article").css('visibility', 'visible');
+      $("#negative-article").css('border-color', 'hsl(' + score + ',30%, 50%)'); 
       $("#negative-article").empty().append("<p> <a target='_blank' href=" + url + "/a>" + title + "</p>"); 
       $("#negative-article").append("<p>" + content + "</p>"); 
+
     }
     else {
       $("#positive-article").css('visibility', 'visible');
+      $("#positive-article").css('border-color', 'hsl(' + score + ',30%, 50%)'); 
       $("#positive-article").empty().append("<p> <a target='_blank' href=" + url + "/a>" + title + "</p>"); 
       $("#positive-article").append("<p>" + content + "</p>"); 
     }

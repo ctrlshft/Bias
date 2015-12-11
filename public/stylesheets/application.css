@@ -36,7 +36,7 @@
   border: 2px solid #5E81E4;
   border-radius: 50%;
   position: absolute;
-/*  background-color: #f1f1f1;*/
+  transition: all 2s ease-in-out;
   margin-top: 32px;
   /*margin-left:-90px;*/
   }

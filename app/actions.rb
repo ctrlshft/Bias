@@ -25,7 +25,7 @@ get '/' do
 #-------------get general sentiment of article-------#
 
   def analyze_url_non_targeted (url)
-    @conn.get "/calls/url/URLGetTextSentiment?apikey=4d314350027a4905e524e783e548a4e90a04c813&url=#{url}&outputMode=json&showSourceText=1&sourceText=cleaned"
+    @conn.get "/calls/url/URLGetTextSentiment?apikey=bc9d67cc85047b79b30187500483a6212581839d&url=#{url}&outputMode=json&showSourceText=1&sourceText=cleaned"
   end
 
 #----------extract seniment--------#
@@ -45,12 +45,12 @@ get '/' do
 
 
   search_topic = params[:topic]
-  media_source = params[:newssources]
+  media = params[:media]
 
 
 # ---- search bing with topic -------- #
 
-  if media_source == "ALL"
+  if media == "ALL"
     search_response = BingSearch.news("#{search_topic}" , limit: 10, sort:"relevance")
     # --------- parse responses ------- #
     search_response.each do |result| 
@@ -63,7 +63,7 @@ get '/' do
     end
     
   else
-    search_response = RubyWebSearch::Google.search(:query => "#{search_topic} :site #{media_source}", :size => 10)
+    search_response = RubyWebSearch::Google.search(:query => "#{search_topic} :site #{media}", :size => 5)
   # ----- parse responses ----- #
     search_response.results.each do |result| 
       article = {
@@ -113,7 +113,7 @@ get '/' do
 
   # sentiment_range = @articles.first[:score] - @articles.last[:score]
   @articles.each do |article|
-   article[:normalized_score_relative] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 100
+   article[:normalized_score_relative] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 95
   end
 
 
