@@ -42,28 +42,16 @@ get '/' do
 
   @avg_score_arr = []
 
-  news_sources = ["cnn",
-                  "cbc",
-                  "al jazeera",
-                  "bbc",
-                  "new york times",
-                  "washington post",
-                  "vice",
-                  "toronto sun",
-                  "rt news",
-                  "infowars",
-                  "haaretz"
 
-                ]
 
   search_topic = params[:topic]
   media_source = params[:newssources]
 
 
 # ---- search bing with topic -------- #
-  # news_sources.each do |source|
+
   if media_source == "ALL"
-    search_response = BingSearch.news("#{search_topic}" , limit: 10, sort:"date")
+    search_response = BingSearch.news("#{search_topic}" , limit: 10, sort:"relevance")
     # --------- parse responses ------- #
     search_response.each do |result| 
       article = {
@@ -75,7 +63,7 @@ get '/' do
     end
     
   else
-    search_response = RubyWebSearch::Google.search(:query => "#{search_topic} :site #{media_source}", :size => 5)
+    search_response = RubyWebSearch::Google.search(:query => "#{search_topic} :site #{media_source}", :size => 10)
   # ----- parse responses ----- #
     search_response.results.each do |result| 
       article = {
@@ -119,7 +107,7 @@ get '/' do
   
 
   @articles.each do |article|
-   article[:normalized_score_absolute] = (article[:score] - @articles[0][:score]) * 50
+   article[:normalized_score_absolute] = (article[:score] + 1) * 50
   end
 
 

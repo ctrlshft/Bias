@@ -12,10 +12,12 @@
         <br>
         <select id="dropdown" name="newssources">
           <option value="ALL">All</option>
-          <option value="CNN">CNN</option>
-          <option value="RT">RT</option>
-          <option value="FOX">FOX</option>
-          <option value="CBC">CBC</option>
+          <option value="cnn.com">CNN</option>
+          <option value="rt.com">RT</option>
+          <option value="foxnews.com">FOX</option>
+          <option value="cbc.ca">CBC</option>
+          <option value="npr.org">NPR</option>
+          <option value="infowars.com">InfoWars</option>
         </select>
         <input id="submit_button" type="submit" value="Submit">
       </form>
@@ -37,10 +39,11 @@
            title="<%=article[:source].upcase%>: <%=article[:title]%>" 
            data-url="<%=article[:url]%>" 
            data-content="<%=article[:content]%>"
-           data-score="<%=article[:normalized_score_relative]%>"
+           data-score="<%=article[:score]%>"
            data-title="<%=article[:source].upcase%>: <%=article[:title]%>" 
            id="<%=article_index%>" 
-           style="left: <%=article[:normalized_score_relative]%>%">
+           style="left: <%=article[:normalized_score_absolute]%>%; background-color: hsl(<%=article[:normalized_score_relative]%>,75%,50%)">
+    
       </div>
       <%end%>
     <!-- </div> -->

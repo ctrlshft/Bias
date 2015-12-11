@@ -36,9 +36,9 @@
   border: 2px solid #5E81E4;
   border-radius: 50%;
   position: absolute;
-  background-color: #f1f1f1;
+/*  background-color: #f1f1f1;*/
   margin-top: 32px;
-  margin-left:-90px;
+  /*margin-left:-90px;*/
   }
 
 /*  .article_dot:last-child{
@@ -50,7 +50,7 @@
   }*/
 
   .article_dot:first-child{
-    margin-left: 26px;
+    /*margin-left: 26px;*/
   }
 
 
@@ -67,7 +67,7 @@
   border:1px solid black;
   z-index: -1;
   /*background-color: #555;*/
-  background: linear-gradient(to right, red , green);
+  background: black;
   position: absolute;
   bottom: 0;
   left: 0;
