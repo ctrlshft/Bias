@@ -1,17 +1,6 @@
 BingSearch.account_key = 'hqXahx+6k2dIwnykE26HCrEItoUXM8JmiVB1QBocMhA'
-
-#search ten top articles on topic
-#extract sentiment
-#calculate max sentiment difference
-#display the 2 max sentiment difference articles
-#calculate 2nd biggest sentiment difference and provide those articles as option
-#calculate 3nd biggest sentiment difference and provide those articles as option
-
-
-#or create new sentiment scale based on biggest difference and populate
-
-#strech - provide sentiment map for all search results? or 2 views. one - relative sentiment, two - absolute sentiment.switchable
-
+require_relative'../cache/cache.rb'
+# require_relative'../cache/cache.rb'
 
 get '/' do
 
@@ -39,17 +28,19 @@ get '/' do
   end
 
   @articles = []
-
   @avg_score_arr = []
-
-
-
   search_topic = params[:topic]
   media = params[:media]
+  # topic_array = []
 
 
-# ---- search bing with topic -------- #
 
+if search_topic == 'syria'
+  @articles = @@array_response_syria
+elsif search_topic == 'donald trump'
+  @articles = @@array_response_donald_trump
+else
+# ---- search bing with topic and return general selection-------- #
   if media == "ALL"
     search_response = BingSearch.news("#{search_topic}" , limit: 10, sort:"relevance")
     # --------- parse responses ------- #
@@ -61,7 +52,7 @@ get '/' do
       }
       @articles.push(article)
     end
-    
+ # ---- search google with topic and return media specific selection-------- #   
   else
     search_response = RubyWebSearch::Google.search(:query => "#{search_topic} :site #{media}", :size => 5)
   # ----- parse responses ----- #
@@ -73,18 +64,13 @@ get '/' do
       }
       @articles.push(article)
     end
- 
   end
-
-
-  # end
 
 # ---- send to alchemy for analysis sentiment extraction ----#
   @articles.each_with_index do |article, article_index|
     response = analyze_url_non_targeted(article[:url])
     extract_sentiment(response, article_index)
   end
-
 
 # ------ average sentiment score of all articles ----- #
   @average_sentiment_score = @avg_score_arr.sum / @avg_score_arr.size.to_f
@@ -97,11 +83,7 @@ get '/' do
     @average_sentiment_type = 'negative'
   end
 
-
-
- 
 # # --- sort by sentiment scores and find sentiment range (will plot by relative sentiment----#
-
   @articles = @articles.reject {|article| (article[:score] == nil)||(article[:score] == 0)}
   @articles = @articles.sort_by { |hsh| hsh[:score] }
   
@@ -110,12 +92,13 @@ get '/' do
    article[:normalized_score_absolute] = (article[:score] + 1) * 50
   end
 
-
-  # sentiment_range = @articles.first[:score] - @articles.last[:score]
   @articles.each do |article|
-   article[:normalized_score_relative] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 95
+   article[:normalized_score_relative] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 94.5
   end
-
+# File.write('cache/cache.rb', @articles, mode: 'a')
+# search_topic_underscore = search_topic.gsub(' ','-')
+# topic_array.push(search_topic_underscore)
+end
 
 
 

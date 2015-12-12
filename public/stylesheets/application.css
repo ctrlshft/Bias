@@ -76,16 +76,27 @@
 
 #negative-article{
   visibility: hidden;
-  background-color: grey;
-  color: white;
+  background-color: white;
+  color: black;
   overflow:scroll;
+  font-family: serif;
+  font-style: times;
+  border-radius: 0;
+  border: 1px black solid;
+  box-shadow: 10px 10px 5px #888888;
+  text-align: justify;
 }
 
 #positive-article{
   visibility: hidden;
   overflow:scroll;
-  color:white;
-  background-color: grey;
+  color:black;
+  background-color: white;
+  font-family: 'Roboto Slab', serif;
+  border-radius: 0;
+  border: 1px black solid ;
+  box-shadow: 10px 10px 5px #888888;
+  text-align: justify;
 }
 
 #dropdown{
