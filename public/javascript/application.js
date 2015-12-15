@@ -9,6 +9,12 @@ $(document).ready(function() {
     trigger: 'hover'
   });
 
+  setTimeout(function(){
+    // $("div#1.article_dot.tooltip.tooltipstered").trigger('click'); 
+    $("div.article_dot:first-child").trigger('click'); 
+    $("div.article_dot:last-child").trigger('click'); 
+  }, 300);
+
   $("#sentiment_scale").click(function() {
     if (!$(this).hasClass("relative")) {
       $(this).addClass("relative")
@@ -25,21 +31,14 @@ $(document).ready(function() {
         $( element ).css( "left", score_absolute + "%");
       });
     }
-    
   });
-
-
-       
-    
-
-
-
-
-  
 
 
   $(".article_dot").on('click', function(event){
     event.stopPropagation();
+
+    console.log("nav dot clicked", event);
+
     var url = $(this).data().url;
     var content = $(this).data().content;
     var score = $(this).data().srel;
