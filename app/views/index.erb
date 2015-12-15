@@ -18,6 +18,7 @@
           <option value="www.cbc.ca">CBC</option>
           <option value="www.npr.org">NPR</option>
           <option value="www.infowars.com">InfoWars</option>
+          <option value="www.news.vice.com">VICE</option>
         </select>
         <input id="submit_button" type="submit" value="Submit">
       </form>
@@ -36,15 +37,15 @@
     <!-- <div class="inner-container"> -->
       <% @articles.each_with_index do |article, article_index| %>
       <div class="article_dot tooltip" 
+           id="<%=article_index%>" 
            title="<%=article[:source].upcase%>: <%=article[:title]%>" 
            data-url="<%=article[:url]%>" 
-           data-content="<%=article[:content]%>"
            data-score="<%=article[:score]%>"
            data-srel="<%=article[:normalized_score_relative]%>"
            data-sabs="<%=article[:normalized_score_absolute]%>"
            data-title="<%=article[:source].upcase%>: <%=article[:title]%>" 
-           id="<%=article_index%>" 
-           style="left: <%=article[:normalized_score_absolute]%>%; background-color: hsl(<%=article[:normalized_score_relative]%>,75%,50%)">
+           style="left: <%=article[:normalized_score_absolute]%>%; background: hsl(<%=article[:normalized_score_relative]%>,75%,50%)"
+           data-content="<%=article[:content]%>">
     
       </div>
       <%end%>

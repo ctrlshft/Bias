@@ -49,7 +49,7 @@ $(document).ready(function() {
       // $("#negative-article").empty().append("<p> <a href=" + url + "/a>" + Go to full article + "</p>"); 
       $("#negative-article").css('visibility', 'visible');
       $("#negative-article").css('border-color', 'hsl(' + score + ',30%, 50%)'); 
-      $("#negative-article").empty().append("<p> <a target='_blank' href=" + url + ">" + title + "</p>"); 
+      $("#negative-article").empty().append("<p> <a target='_blank' href=" + url + "/a>" + title + "</p>"); 
       $("#negative-article").append("<p>" + content + "</p>"); 
 
     }

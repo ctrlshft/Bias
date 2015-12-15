@@ -93,7 +93,7 @@ else
   end
 
   @articles.each do |article|
-   article[:normalized_score_relative] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 94.5
+   article[:normalized_score_relative] = (( article[:score] - @articles[0][:score] ) / ( @articles[-1][:score] - @articles[0][:score])) * 90
   end
 # File.write('cache/cache.rb', @articles, mode: 'a')
 # search_topic_underscore = search_topic.gsub(' ','-')
