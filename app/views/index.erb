@@ -5,21 +5,28 @@
  
     </div>
     <div class="one-third column" id="center">
-      <h1 id="title">Bias</h1>
+      <h1 id="title">Bias
+        <!-- <img src="http://www.universallythinking.com/wp-content/uploads/2015/03/Loading-spinner-icon-500x480.png" width="265px;"> -->
+      </h1>
       <br>
       <form action:'/' method:"get">
-        <input id="search" type="search" name="topic" placeholder="search topic" value="<%= params[:topic] %>">
+        <input id="search" input align="middle" type="search" name="topic" placeholder="search topic" value="<%= params[:topic] %>">
         <br>
-        <select id="dropdown" name="media">
-          <option value="ALL">All</option>
-          <option value="www.cnn.com">CNN</option>
-          <option value="www.rt.com">RT</option>
-          <option value="www.wsj.com">WSJ</option>
-          <option value="www.cbc.ca">CBC</option>
-          <option value="www.npr.org">NPR</option>
-          <option value="www.infowars.com">InfoWars</option>
-          <option value="www.news.vice.com">VICE</option>
+        <select id="dropdown" name="media" value="<%= params[:media] %>">
+          <!-- create websites array -->
+          <% websites = [{value: "ALL", name: "All"}, {value: "www.cnn.com", name: "CNN"}, {value: "www.rt.com", name: "RT"}, {value: "www.wsj.com", name: "WSJ"}, {value: "www.cbc.ca", name: "CBC"}, {value: "www.npr.org", name: "NPR"}, {value: "www.abcnews.go.com", name: "ABC"}, {value: "www.news.vice.com", name: "VICE"}] %>
+          <!-- each website -->
+          <% websites.each do |website| %>
+            <% if params[:media] == website[:value] %>
+              <!-- selected -->
+              <option value="<%= website[:value] %>" selected><%= website[:name] %></option>
+            <% else %> 
+              <!-- not selected -->
+              <option value="<%= website[:value] %>"><%= website[:name] %></option>
+            <% end %>
+          <% end %>
         </select>
+
         <input id="submit_button" type="submit" value="Submit">
       </form>
     </div>
@@ -33,24 +40,24 @@
 
 </div>
 
-  <div id="sentiment_scale">
-    <!-- <div class="inner-container"> -->
-      <% @articles.each_with_index do |article, article_index| %>
-      <div class="article_dot tooltip" 
-           id="<%=article_index%>" 
-           title="<%=article[:source].upcase%>: <%=article[:title]%>" 
-           data-url="<%=article[:url]%>" 
-           data-score="<%=article[:score]%>"
-           data-srel="<%=article[:normalized_score_relative]%>"
-           data-sabs="<%=article[:normalized_score_absolute]%>"
-           data-title="<%=article[:source].upcase%>: <%=article[:title]%>" 
-           style="left: <%=article[:normalized_score_absolute]%>%; background: hsl(<%=article[:normalized_score_relative]%>,75%,50%)"
-           data-content="<%=article[:content]%>">
-    
-      </div>
-      <%end%>
-    <!-- </div> -->
-  </div>
+<div id="sentiment_scale">
+  <!-- <div class="inner-container"> -->
+    <% @articles.each_with_index do |article, article_index| %>
+    <div class="article_dot tooltip" 
+         id="<%=article_index%>" 
+         title="<%=article[:source].upcase%>: <%=article[:title]%>" 
+         data-url="<%=article[:url]%>" 
+         data-score="<%=article[:score]%>"
+         data-srel="<%=article[:normalized_score_relative]%>"
+         data-sabs="<%=article[:normalized_score_absolute]%>"
+         data-title="<%=article[:source].upcase%>: <%=article[:title]%>" 
+         style="left: <%=article[:normalized_score_absolute]%>%; background: hsl(<%=article[:normalized_score_relative]%>,75%,50%)"
+         data-content="<%=article[:content]%>">
+  
+    </div>
+    <%end%>
+  <!-- </div> -->
+</div>
 
 
 
