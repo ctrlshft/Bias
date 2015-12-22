@@ -38,6 +38,7 @@ GEM
     minitest (5.8.3)
     multi_json (1.11.2)
     multipart-post (2.0.0)
+    pg (0.18.3)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -94,6 +95,7 @@ DEPENDENCIES
   faraday
   faraday_middleware
   google_search
+  pg
   pry
   puma
   rake
